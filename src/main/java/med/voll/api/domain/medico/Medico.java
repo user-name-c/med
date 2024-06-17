@@ -14,80 +14,40 @@ import med.voll.api.domain.direccion.Direccion;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Medico {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long Id;
-    private Boolean activo;
+    private Long id;
     private String nombre;
     private String email;
     private String telefono;
     private String documento;
+
+    private Boolean activo;
     @Enumerated(EnumType.STRING)
     private Especialidad especialidad;
-    //esta clase
     @Embedded
     private Direccion direccion;
 
-    public Medico(DatosRegistoMedico datosRegistoMedico) {
+    public Medico(DatosRegistroMedico datosRegistroMedico) {
         this.activo = true;
-        this. nombre = datosRegistoMedico.nombre();
-       this.email = datosRegistoMedico.email();
-       this.telefono = datosRegistoMedico.telefono();
-       this.documento = datosRegistoMedico.documento();
-        this.especialidad = datosRegistoMedico.especialidad();
-        this.direccion = new Direccion(datosRegistoMedico.direccion());
+        this.nombre = datosRegistroMedico.nombre();
+        this.email = datosRegistroMedico.email();
+        this.documento = datosRegistroMedico.documento();
+        this.telefono = datosRegistroMedico.telefono();
+        this.especialidad = datosRegistroMedico.especialidad();
+        this.direccion = new Direccion(datosRegistroMedico.direccion());
     }
 
-
-    public Direccion getDireccion() {
-        return direccion;
-    }
-
-    public void setDireccion(Direccion direccion) {
-        this.direccion = direccion;
-    }
-
-    public Especialidad getEspecialidad() {
-        return especialidad;
-    }
-
-    public void setEspecialidad(Especialidad especialidad) {
-        this.especialidad = especialidad;
-    }
-
-    public String getDocumento() {
-        return documento;
-    }
-
-    public void setDocumento(String documento) {
-        this.documento = documento;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void actuallizarDatos(MedicoActualizarDTO medicoActualizarDTO) {
-        if(medicoActualizarDTO.nombre() != null) {
-            this.nombre = medicoActualizarDTO.nombre();
+    public void actualizarDatos(DatosActualizarMedico datosActualizarMedico) {
+        if (datosActualizarMedico.nombre() != null) {
+            this.nombre = datosActualizarMedico.nombre();
         }
-        if(medicoActualizarDTO.documento() != null) {
-            this.documento = medicoActualizarDTO.documento();
+        if (datosActualizarMedico.documento() != null) {
+            this.documento = datosActualizarMedico.documento();
         }
-        if(medicoActualizarDTO.direccion() != null) {
-            this.direccion = direccion.actualizarDatos(medicoActualizarDTO.direccion());
+        if (datosActualizarMedico.direccion() != null) {
+            this.direccion = direccion.actualizarDireccion(datosActualizarMedico.direccion());
         }
     }
 

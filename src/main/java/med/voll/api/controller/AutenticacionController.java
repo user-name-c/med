@@ -1,9 +1,10 @@
 package med.voll.api.controller;
 
+
 import jakarta.validation.Valid;
+import med.voll.api.domain.usuarios.DatosAutenticacionUsuario;
 import med.voll.api.domain.usuarios.Usuario;
-import med.voll.api.domain.usuarios.UsuarioDTO;
-import med.voll.api.infra.security.JWTtokenDTO;
+import med.voll.api.infra.security.DatosJWTToken;
 import med.voll.api.infra.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,14 +27,12 @@ public class AutenticacionController {
     private TokenService tokenService;
 
     @PostMapping
-    //@RequestBody @Valid para validar usuarios recibidos
-    public ResponseEntity autenticacionUsuario(@RequestBody @Valid UsuarioDTO datosAutenticacionUsuario) {
-        Authentication authToken = new UsernamePasswordAuthenticationToken(
-                datosAutenticacionUsuario.login(), datosAutenticacionUsuario.clave()
-        );
+    public ResponseEntity autenticarUsuario(@RequestBody @Valid DatosAutenticacionUsuario datosAutenticacionUsuario) {
+        Authentication authToken = new UsernamePasswordAuthenticationToken(datosAutenticacionUsuario.login(),
+                datosAutenticacionUsuario.clave());
         var usuarioAutenticado = authenticationManager.authenticate(authToken);
         var JWTtoken = tokenService.generarToken((Usuario) usuarioAutenticado.getPrincipal());
-        // regresamos un token dto
-        return ResponseEntity.ok(new JWTtokenDTO(JWTtoken));
+        return ResponseEntity.ok(new DatosJWTToken(JWTtoken));
     }
+
 }

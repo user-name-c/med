@@ -1,6 +1,5 @@
 package med.voll.api.domain.usuarios;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -19,18 +18,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-//indicamos que es usuario de spring UserDetails
 public class Usuario implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String login;
     private String clave;
 
-    //asigna privilegios al usuario
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USERG"));
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
     }
 
     @Override

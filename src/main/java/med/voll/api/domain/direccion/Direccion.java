@@ -10,67 +10,28 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Direccion {
+
     private String calle;
-    private String distrito;
-   private  String ciudad;
     private String numero;
-   private  String complemento;
+    private String complemento;
+    private String distrito;
+    private String ciudad;
 
     public Direccion(DatosDireccion direccion) {
         this.calle = direccion.calle();
-        this.distrito = direccion.distrito();
-        this.ciudad = direccion.ciudad();
         this.numero = direccion.numero();
+        this.distrito = direccion.distrito();
         this.complemento = direccion.complemento();
+        this.ciudad = direccion.ciudad();
 
     }
 
-    public String getCalle() {
-        return calle;
-    }
-
-    public void setCalle(String calle) {
-        this.calle = calle;
-    }
-
-    public String getDistrito() {
-        return distrito;
-    }
-
-    public void setDistrito(String distrito) {
-        this.distrito = distrito;
-    }
-
-    public String getCiudad() {
-        return ciudad;
-    }
-
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
-    }
-
-    public String getNumero() {
-        return numero;
-    }
-
-    public void setNumero(String numero) {
-        this.numero = numero;
-    }
-
-    public String getComplement() {
-        return complemento;
-    }
-
-    public void setComplement(String complement) {
-        this.complemento = complement;
-    }
-
-    public Direccion actualizarDatos(DatosDireccion direccion) {
+    public Direccion actualizarDireccion(DatosDireccion direccion) {
         this.calle = direccion.calle();
-        this.distrito = direccion.distrito();
-        this.ciudad = direccion.ciudad();
         this.numero = direccion.numero();
+        this.distrito = direccion.distrito();
         this.complemento = direccion.complemento();
+        this.ciudad = direccion.ciudad();
         return this;
     }
 }

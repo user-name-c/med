@@ -5,7 +5,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.auth0.jwt.interfaces.JWTVerifier;
 import med.voll.api.domain.usuarios.Usuario;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,51 +13,40 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-
-
 @Service
 public class TokenService {
 
     @Value("${api.security.secret}")
-    private String apiSecurity;
+    private String apiSecret;
 
-    //metoco para generar mi token
-    public String generarToken(Usuario usuario){
-       //este codigo se copio de jwt.io AuthO se modificaronm
+    public String generarToken(Usuario usuario) {
         try {
-            Algorithm algorithm = Algorithm.HMAC256(apiSecurity);
+            Algorithm algorithm = Algorithm.HMAC256(apiSecret);
             return JWT.create()
-                    .withIssuer("API Voll.med")
-                    // aqui esta siendo geverado el subject
+                    .withIssuer("voll med")
                     .withSubject(usuario.getLogin())
                     .withClaim("id", usuario.getId())
-                    .withExpiresAt(generarFechaDeExpiracion())
+                    .withExpiresAt(generarFechaExpiracion())
                     .sign(algorithm);
         } catch (JWTCreationException exception){
-            // Invalid Signing configuration / Couldn't convert Claims.
-            throw new RuntimeException("error al generar token jwt", exception);
+            throw new RuntimeException();
         }
     }
 
-    //metodo para obtener el subject/usuario de mi token
-    public String getSubject(String token){
+    public String getSubject(String token) {
         if (token == null) {
-            throw new RuntimeException("token es mulo");
+            throw new RuntimeException();
         }
-        // copiamos codigo de jwt.io AuthO
         DecodedJWT verifier = null;
         try {
-            var algorithm = Algorithm.HMAC256(apiSecurity);
+            Algorithm algorithm = Algorithm.HMAC256(apiSecret); // validando firma
             verifier = JWT.require(algorithm)
-                    // specify any specific claim validations
-                    .withIssuer("API Voll.med")
-                    // reusable verifier instance
+                    .withIssuer("voll med")
                     .build()
                     .verify(token);
             verifier.getSubject();
-        } catch (JWTVerificationException exception){
-            // Invalid signature/claims
-            throw new RuntimeException("token JWT invalido o expirado");
+        } catch (JWTVerificationException exception) {
+            System.out.println(exception.toString());
         }
         if (verifier.getSubject() == null) {
             throw new RuntimeException("Verifier invalido");
@@ -66,7 +54,8 @@ public class TokenService {
         return verifier.getSubject();
     }
 
-    private Instant generarFechaDeExpiracion(){
+    private Instant generarFechaExpiracion() {
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-05:00"));
     }
+
 }
