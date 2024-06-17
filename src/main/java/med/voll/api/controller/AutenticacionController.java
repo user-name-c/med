@@ -29,7 +29,8 @@ public class AutenticacionController {
     //@RequestBody @Valid para validar usuarios recibidos
     public ResponseEntity autenticacionUsuario(@RequestBody @Valid UsuarioDTO datosAutenticacionUsuario) {
         Authentication authToken = new UsernamePasswordAuthenticationToken(
-                datosAutenticacionUsuario.login(), datosAutenticacionUsuario.clave()
+                datosAutenticacionUsuario.login(),
+                datosAutenticacionUsuario.clave()
         );
         var usuarioAutenticado = authenticationManager.authenticate(authToken);
         var JWTtoken = tokenService.generarToken((Usuario) usuarioAutenticado.getPrincipal());
