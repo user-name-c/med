@@ -1,4 +1,5 @@
 spring:
+  profile.active: dev, test
   application:
     name: api
 
